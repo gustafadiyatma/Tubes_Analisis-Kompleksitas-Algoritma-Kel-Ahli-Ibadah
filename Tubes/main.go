@@ -8,19 +8,11 @@ import (
 	"time"
 )
 
-/* ===============================
-   STRUCT RESPONSE JSON
-================================ */
-
 type Result struct {
 	Depth         int     `json:"depth"`
 	RecursiveTime float64 `json:"recursive_time"`
 	IterativeTime float64 `json:"iterative_time"`
 }
-
-/* ===============================
-   ALGORITMA SIERPINSKI
-================================ */
 
 // Rekursif (simulasi pemecahan segitiga)
 func sierpinskiRecursive(depth int) {
@@ -34,20 +26,15 @@ func sierpinskiRecursive(depth int) {
 
 // Iteratif (simulasi jumlah segitiga)
 func sierpinskiIterative(depth int) {
-    total := 1
-    for i := 0; i < depth; i++ {
-        total *= 3
-    }
+	total := 1
+	for i := 0; i < depth; i++ {
+		total *= 3
+	}
 
-    for i := 0; i < total; i++ {
-        _ = i * i
-    }
+	for i := 0; i < total; i++ {
+		_ = i * i
+	}
 }
-
-
-/* ===============================
-   HANDLER ROUTE
-================================ */
 
 // Route halaman utama
 func home(w http.ResponseWriter, r *http.Request) {
@@ -63,16 +50,14 @@ func test(w http.ResponseWriter, r *http.Request) {
 		depth = 5
 	}
 
-	const repeat = 10000 // PENGULANGAN agar waktu tidak 0
+	const repeat = 10000
 
-	// Uji Rekursif
 	start := time.Now()
 	for i := 0; i < repeat; i++ {
 		sierpinskiRecursive(depth)
 	}
 	recursiveTime := time.Since(start).Seconds()
 
-	// Uji Iteratif
 	start = time.Now()
 	for i := 0; i < repeat; i++ {
 		sierpinskiIterative(depth)
@@ -88,10 +73,6 @@ func test(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(result)
 }
-
-/* ===============================
-   MAIN
-================================ */
 
 func main() {
 	http.HandleFunc("/", home)
